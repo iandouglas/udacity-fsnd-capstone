@@ -1,20 +1,16 @@
-name: Auto Assign to Project(s)
-
+name: PR Project Assigner
 on:
   issues:
-    types: [opened, labeled]
+    types: [opened, reopened]
   pull_request:
-    types: [opened, labeled]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    types: [opened, reopened]
 
 jobs:
-  assign_one_project:
+  build:
+    name: Add to project
     runs-on: ubuntu-latest
-    name: Assign to One Project
     steps:
-    - name: Assign NEW issues and NEW pull requests to project 1
-      uses: srggrs/assign-one-project-github-action@1.2.0
-      if: github.event.action == 'opened'
-      with:
-        project: 'https://github.com/iandouglas/udacity-fsnd-capstone/projects/1'
+      - uses: ookami-kb/gh-pr-project@v1
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          projectId: MDEwOlJlcG9zaXRvcnkyOTg3Nzg2ODQ=
