@@ -1,4 +1,4 @@
-name: PR Project Assigner
+name: "Assign new Issues and PRs to Project"
 on:
   issues:
     types: [opened, reopened]
@@ -6,11 +6,12 @@ on:
     types: [opened, reopened]
 
 jobs:
-  build:
-    name: Add to project
+  add_to_project:
     runs-on: ubuntu-latest
     steps:
-      - uses: ookami-kb/gh-pr-project@v1
+      - uses: skeet70/default-project-board-action@v1
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          projectId: MDEwOlJlcG9zaXRvcnkyOTg3Nzg2ODQ=
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          issue: ${{ github.event.issue.number }}
+          project: 1
