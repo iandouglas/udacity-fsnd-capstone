@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.8"
+install:
+  - pip install -r requirements.txt
+script:
+  - pytest
+deploy:
+  provider: heroku
+  api_key:
+    secure: qsblmxh0naOm47+dY2hpngF5vfkZEp5dHnv5Nj14KjJy+SEOx1DsADAt0hKXAYFboW1i1OyT0S81GS0jKXN7GeXz4F/AeaRJhtCkZ4mXp2ScGExSPrnkbOUqszwADYf65OE7TqIcUOhGhziInI6XB+l/N0Vwas/6TXnybeASo3Z62Uy07Sv5R3O9z6+C6wEPMs37fBKIi+BaJzyYcJJbYYmydfmpXlno2zu16qntdaEqfBDMGAbu8TPuy6KMbUJe9BJMT1QnUY9vpaFQx3GZQit17mpsxstxOeeYvABzjIjjXbjy5k1nA0XY7kjpTuOGpkBUR2Ax9QI6gdDJ+4X3YcVTgvQgTdG+B71AKgIq1DaMTcqX/bhIUe5O8lNJRnUqa+E7T3eCyxUyPB7KcuKcvkd3lLmq4N5mlmLcbEQ7eNDWil4vN51C0qYCRnJ4TnbRzi28+Qmq+a17cv+R76OAOt99oP4ANd1S/XBfzM7gmeLNSFRsiK8W+BQFLTXJg2fdCZISaIWTh0KQFvRAZNs5nsJWHtGncqouX+M3/hIPHDnDXiDCwyaHj121YUxaMpnOUoxd3TUTM4oF0Fv2Ix4zghFhbyj4/31hexww8OddAgtnSBDDHq3yE3b2xB1gjCdr4oi7QC4eazdi0jDse6PUHzINPr33zrhE+BVdzxXHoi8=
+  app: udacity-fsnd-capstone
+  on:
+    repo: iandouglas/udacity-fsnd-capstone
+    branch: main
+  skip_cleanup: 'true'
