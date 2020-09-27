@@ -40,3 +40,8 @@ class AppTest(unittest.TestCase):
             str,
             'GET, PATCH, POST, DELETE, OPTIONS'
         )
+
+    def test_home_page_content(self):
+        response = self.client.get('/')
+
+        self.assertIn(b'Login', response.data)
