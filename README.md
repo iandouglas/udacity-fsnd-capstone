@@ -33,12 +33,77 @@ Description:
 Required Request Headers:
 - none
 
+Required Auth Role:
+- none
+
 Required Request Body:
 - none
 
 Response Body: (TBD)
 ```json
-{}
+{
+  "location": "Arvada, CO",
+  "current_temp": "79.3F",
+  "conditions": "partly cloudy"
+}
+```
+
+#### GET /api/roadtrips
+
+Description:
+- fetches all road trips for authenticated user
+
+Required Request Headers:
+- TBD
+
+Required Auth Role:
+- "get:roadtrips"
+
+Required Request Body:
+- none
+
+Response Body: (TBD)
+```json
+[
+  {
+    "starting_city": "Denver, CO",
+    "ending_city": "Estes Park, CO"
+  },
+  {
+    "starting_city": "Arvada, CO",
+    "ending_city": "Denver, CO"
+  },
+  {...}
+]
+```
+
+#### GET /api/cities
+
+Description:
+- fetches quantities of road trips by city
+
+Required Request Headers:
+- TBD
+
+Required Auth Role:
+- "get:roadtrips"
+
+Required Request Body:
+- none
+
+Response Body: (TBD)
+```json
+{
+  "starting_cities": {
+    "Arvada, CO": 2,
+    "Denver, CO": 3
+  },
+  "ending_cities": {
+    "Arvada, CO": 2,
+    "Estes Park, CO": 2,
+    "Denver, CO": 1,
+  }
+}
 ```
 
 #### GET /api/roadtrips/1
@@ -49,12 +114,23 @@ Description:
 Required Request Headers:
 - TBD
 
+Required Auth Role:
+- "get:roadtrips"
+
 Required Request Body:
 - none
 
 Response Body: (TBD)
 ```json
-{}
+{
+  "starting_city": "Denver, CO",
+  "ending_city": "Estes Park, CO",
+  "travel_time": "2 hours, 13 minutes",
+  "forecast_at_eta": {
+    "temp": "52.5F",
+    "conditions": "mostly cloudy"
+  }
+}
 ```
 
 #### POST /api/roadtrips
@@ -64,6 +140,9 @@ Description:
 
 Required Request Headers:
 - TBD
+
+Required Auth Role:
+- "create:roadtrips"
 
 Required Request Body:
 - JSON payload of 'start_city', 'end_city'
@@ -87,6 +166,9 @@ Description:
 Required Request Headers:
 - TBD
 
+Required Auth Role:
+- "update:roadtrips"
+
 Required Request Body:
 - JSON payload of 'start_city', 'end_city'
 - payload can include one or the other, or both
@@ -109,6 +191,9 @@ Description:
 
 Required Request Headers:
 - TBD
+
+Required Auth Role:
+- "delete:roadtrips"
 
 Required Request Body:
 - none
