@@ -1,8 +1,8 @@
 import unittest
+from sqlalchemy.exc import IntegrityError
 
 from api import create_app, db
 from api.database.models import User
-from tests import seed_data, db_drop_everything
 
 
 class AppTest(unittest.TestCase):
@@ -11,16 +11,48 @@ class AppTest(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-        seed_data(db)
         self.client = self.app.test_client()
 
     def tearDown(self):
         db.session.remove()
-        db_drop_everything(db)
+        db.drop_all()
         self.app_context.pop()
 
     def test_user_model(self):
         user = User(username='ian')
+        user.insert()
 
-        self.assertIs(user, User)
+        self.assertIsInstance(user, User)
+        self.assertIsNotNone(user.id)
         self.assertEqual('ian', user.username)
+
+    def test_user_model_trimmed_username(self):
+        user = User(username=' ian ')
+        user.insert()
+
+        self.assertIsInstance(user, User)
+        self.assertIsNotNone(user.id)
+        self.assertEqual('ian', user.username)
+
+    def test_user_model_unique_username(self):
+        user = User(username='ian')
+        user.insert()
+
+        try:
+            user = User(username='ian')
+            user.insert()
+        except IntegrityError:
+            self.assertTrue(True)
+        else:
+            # we should not end up in here
+            self.assertTrue(False)  # pragma: no-cover
+
+    def test_user_model_blank_username(self):
+        try:
+            user = User(username='')
+            user.insert()
+        except IntegrityError:
+            self.assertTrue(True)
+        else:
+            # we should not end up in here
+            self.assertTrue(False)  # pragma: no-cover
