@@ -2,7 +2,7 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 from api import create_app, db
-from api.database.models import Drink
+from api.database.models import User, City, RoadTrip
 from tests import db_drop_everything
 
 app = create_app()
