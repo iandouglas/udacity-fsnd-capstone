@@ -45,7 +45,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_user_model_blank_username(self):
         try:
@@ -55,4 +55,4 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover

@@ -12,11 +12,15 @@ class AppTest(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-        self.user = User(username='ian')
+        self.user = User(username='ian', user_id=1)
         self.user.insert()
-        self.city_1 = City(name='Denver', state='CO', lat=1.23, lng=3.45)
+        self.city_1 = City(
+            name='Denver', state='CO', lat=1.23, lng=3.45, city_id=1
+        )
         self.city_1.insert()
-        self.city_2 = City(name='Arvada', state='CO', lat=2.23, lng=4.45)
+        self.city_2 = City(
+            name='Arvada', state='CO', lat=2.23, lng=4.45, city_id=2
+        )
         self.city_2.insert()
         self.client = self.app.test_client()
 
@@ -65,7 +69,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_roadtrip_model_missing_name(self):
         try:
@@ -80,7 +84,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_roadtrip_model_missing_user(self):
         try:
@@ -95,7 +99,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_roadtrip_model_missing_city1(self):
         try:
@@ -110,7 +114,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_roadtrip_model_missing_city2(self):
         try:
@@ -125,4 +129,4 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover

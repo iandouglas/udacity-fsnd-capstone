@@ -44,7 +44,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_city_model_mssing_city(self):
         try:
@@ -54,7 +54,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_city_model_blank_state(self):
         try:
@@ -64,7 +64,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_city_model_missing_state(self):
         try:
@@ -74,7 +74,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_city_model_missing_lat(self):
         try:
@@ -84,7 +84,7 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover
 
     def test_city_model_missing_lng(self):
         try:
@@ -94,4 +94,4 @@ class AppTest(unittest.TestCase):
             self.assertTrue(True)
         else:
             # we should not end up in here
-            self.assertTrue(False)  # pragma: no-cover
+            self.assertTrue(False)  # pragma: no cover

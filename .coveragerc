@@ -1,0 +1,21 @@
+[run]
+omit =
+    .pytest_cache
+    venv/*
+    ../venv/*
+    ../../venv/*
+    ../../../venv/*
+
+[report]
+omit =
+    .pytest_cache
+    venv/*
+    ../venv/*
+    ../../venv/*
+    ../../../venv/*
+
+
+ignore_errors = True
+
+[html]
+directory = coverage_html_report

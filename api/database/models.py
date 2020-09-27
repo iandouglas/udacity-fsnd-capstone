@@ -1,0 +1,126 @@
+from sqlalchemy import Column, String, Integer, Float
+import json
+from api import db
+
+
+class EmptyClass(object):
+    pass
+
+
+class User(db.Model):
+    """
+    User Model
+    """
+    __tablename__ = 'users'
+
+    # Auto-incrementing, unique primary key
+    id = Column(Integer, primary_key=True)
+    # unique username
+    username = Column(String(80), unique=True, nullable=False)
+    roadtrips = db.relationship('RoadTrip', backref='user', lazy=True)
+
+    def __init__(self, username, user_id=None):
+        if username is not None:
+            username = username.strip()
+            if username == '':
+                username = None
+        self.username = username
+        if user_id is not None:
+            self.id = user_id
+
+    def insert(self):
+        """
+        inserts a new model into a database
+        the model must have a unique username
+        the model must have a unique id or null id
+        """
+        db.session.add(self)
+        db.session.commit()
+
+
+class City(db.Model):
+    """
+    City Model
+    """
+    __tablename__ = 'cities'
+
+    # Auto-incrementing, unique primary key
+    id = Column(Integer, primary_key=True)
+    # unique username
+    name = Column(String(80), nullable=False)
+    state = Column(String(2), nullable=False)
+    lat = Column(Float, nullable=False)
+    lng = Column(Float, nullable=False)
+
+    def __init__(self, name, state, lat, lng, city_id=None):
+        if name is not None:
+            name = name.strip()
+            if name == '':
+                name = None
+        if state is not None:
+            state = state.strip()
+            if state == '':
+                state = None
+
+        self.name = name
+        self.state = state
+        self.lat = lat
+        self.lng = lng
+        if city_id is not None:
+            self.id = city_id
+
+    def insert(self):
+        """
+        inserts a new model into a database
+        the model must have a unique username
+        the model must have a unique id or null id
+        """
+        db.session.add(self)
+        db.session.commit()
+
+
+class RoadTrip(db.Model):
+    """
+    RoadTrip Model
+    """
+    __tablename__ = 'roadtrips'
+
+    # Auto-incrementing, unique primary key
+    id = Column(Integer, primary_key=True)
+    # unique username
+    name = Column(String(80), unique=True, nullable=False)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable=False
+    )
+    start_city_id = db.Column(
+        db.Integer,
+        db.ForeignKey('cities.id'),
+        nullable=False
+    )
+    end_city_id = db.Column(
+        db.Integer,
+        db.ForeignKey('cities.id'),
+        nullable=False
+    )
+
+    def __init__(self, name, user_id, start_city_id, end_city_id):
+        if name is not None:
+            name = name.strip()
+            if name == '':
+                name = None
+
+        self.name = name
+        self.user_id = user_id
+        self.start_city_id = start_city_id
+        self.end_city_id = end_city_id
+
+    def insert(self):
+        """
+        inserts a new model into a database
+        the model must have a unique username
+        the model must have a unique id or null id
+        """
+        db.session.add(self)
+        db.session.commit()
