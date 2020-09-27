@@ -7,18 +7,17 @@ before_install:
   - sudo apt-get install -y postgresql-11 postgresql-client-11
   - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
   - sudo service postgresql restart 11
-  - sudo pg_ctlcluster 11 main start
-services:
-  - postgresql
-dist:
-  - xenial
-addons:
-  postgresql: "11.2"
-install:
-  - pip install -r requirements.txt
 before_script:
+  - psql --version
   - psql -c 'create database roadtrip_test;' -U postgres
   - python manage.py upgrade
+services:
+  - postgresql
+addons:
+  postgresql: "11.2"
+
+install:
+  - pip install -r requirements.txt
 script:
   - pytest
 deploy:
