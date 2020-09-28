@@ -10,6 +10,56 @@ calls on OpenWeather and MapQuest to fetch forecast data at our destination
 city right now, and build a road trip which will also project the forecast
 when we arrive.
 
+## Project Requirements
+
+### General Specifications
+
+Models will include at least:
+- Two classes with primary keys at at least two attributes each
+  - user class only has username and id
+  - city class has city, state, latitude and longitude, and id
+  - roadtrip class has name,and relationships to users and cities
+- Optional but encouraged: One-to-many or many-to-many relationships between 
+  classes
+  - this project includes both a one-to-many (one user can have many road 
+  trips) and a many-to-many (technically, a user has many cities through the
+  road trips table, making it a 'join' table between users and cities)
+
+Endpoints will include at least:
+- Two GET requests
+  - GET /api/forecast?city=Arvada,CO
+  - GET /api/roadtrips
+  - GET /api/cities
+  - GET /api/roadtrips/1
+- One POST request
+  - POST /api/roadtrips
+- One PATCH request
+  - PATCH /api/roadtrips/1
+- One DELETE request
+  - DELETE /api/roadtrips/1
+
+Roles will include at least:
+- Two roles with different permissions
+  - role 1: unauthenticated user
+    - user will be able to log in
+    - user can fetch forecast data
+  - role 2: authenticated user
+    - "get:roadtrips"
+    - "create:roadtrips"
+    - "update:roadtrips"
+    - "delete:roadtrips"
+- Permissions specified for all endpoints
+  - home page and callback cannot have permissions, obviously
+  - forecast endpoint will not have permissions to allow for anonymous users
+  - all other CRUD endpoints will have permissions set
+
+Tests will include at least:
+- One test for success behavior of each endpoint
+- One test for error behavior of each endpoint
+- At least two tests of RBAC for each role
+
+Uh, yeah, pretty sure I have test coverage for all that :)
+
 ## Endpoints
 
 - GET and PATCH endpoints will return a 200 status code on success
@@ -200,31 +250,4 @@ Required Request Body:
 
 Response Body: (TBD)
 - none on success
-
-
----
-
-# Project Requirements
-
-## General Specifications
-
-Models will include at least:
-- Two classes with primary keys at at least two attributes each
-- Optional but encouraged: One-to-many or many-to-many relationships between 
-  classes
-
-Endpoints will include at least:
-- Two GET requests
-- One POST request
-- One PATCH request
-- One DELETE request
-
-Roles will include at least:
-- Two roles with different permissions
-- Permissions specified for all endpoints
-
-Tests will include at least:
-- One test for success behavior of each endpoint
-- One test for error behavior of each endpoint
-- At least two tests of RBAC for each role
 
