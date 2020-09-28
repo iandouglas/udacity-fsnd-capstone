@@ -6,9 +6,9 @@ from jose import jwt
 
 AUTH0_DOMAIN = 'wildapps.us.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'fsnd-cafe'
-AUTH0_CLIENT_ID = 'OkMASXWuwnKmgx1Sf7slHHTNaMLG3yy1'
-REDIRECT_URL = 'http://localhost:5000/headers'
+API_AUDIENCE = 'fsnd-capstone'
+AUTH0_CLIENT_ID = '9wUPdNcHOxTZVOrqgekSx0LJCD6BdVRB'
+REDIRECT_URL = 'http://localhost:5000/callback'
 AUTH0_AUTHORIZE_URL = f'https://{AUTH0_DOMAIN}/authorize?audience=' \
                       f'{API_AUDIENCE}&response_type=token&client_id=' \
                       f'{AUTH0_CLIENT_ID}&redirect_uri={REDIRECT_URL}'
@@ -69,7 +69,7 @@ def check_permissions(permission, payload):
     return true otherwise
 
     @INPUTS
-        permission: string permission (i.e. 'post:drink')
+        permission: string permission (i.e. 'create:roadtrips')
         payload: decoded jwt payload
     """
     if 'permissions' in payload and permission in payload['permissions']:
@@ -151,7 +151,7 @@ def requires_auth(permission=''):
     method
 
     @INPUTS
-        permission: string permission (i.e. 'post:drink')
+        permission: string permission (i.e. 'create:roadtrips')
     """
     def requires_auth_decorator(f):
         @wraps(f)

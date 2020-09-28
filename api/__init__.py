@@ -2,7 +2,9 @@ import os
 
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+
+from api.auth.auth import requires_auth, AuthError
 from config import config
 
 db = SQLAlchemy()
@@ -20,6 +22,48 @@ def create_app(config_name='default'):
         response.headers.add('Access-Control-Allow-Methods',
                              'GET, PATCH, POST, DELETE, OPTIONS')
         return response
+
+    @app.errorhandler(AuthError)
+    @app.errorhandler(401)
+    def not_authenticated(error):
+        """
+        error handler for 401
+        """
+        return jsonify({
+            "success": False,
+            "error": 401,
+            "message": "unauthorized"
+        }), 401
+
+    @app.errorhandler(403)
+    def not_authorized(error):
+        """
+        error handler for 403
+        """
+        return jsonify({
+            "success": False,
+            "error": 403,
+            "message": "forbidden"
+        }), 403
+
+    @app.errorhandler(404)
+    def not_found(error):
+        """
+        error handler for 404
+        """
+        return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "resource not found"
+        }), 404
+
+    @app.route('/auth-required')
+    @requires_auth('create:roadtrips')
+    def auth_required(payload):
+        return jsonify({
+            "success": True,
+            "message": "authorized"
+        }), 200
 
     @app.route('/callback')
     def auth0_callback():
