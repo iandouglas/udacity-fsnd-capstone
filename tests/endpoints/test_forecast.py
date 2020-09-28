@@ -34,10 +34,14 @@ class ForecastTest(unittest.TestCase):
         self.assertEqual('F', data['current_temp'][-1])
 
         assert_payload_field_type(self, data, 'conditions', str)
-        self.assertGreater(0, len(data['conditions']))
+        self.assertGreater(len(data['conditions']), 0)
 
-# {
-#   "location": "Arvada, CO",
-#   "current_temp": "79.3F",
-#   "conditions": "partly cloudy"
-# }
+    def test_forecast_sadpath(self):
+        response = self.client.get('/api/forecast?location=lkajslkjsdf')
+        data = json.loads(response.data.decode('utf-8'))
+
+        self.assertEqual(500, response.status_code)
+        assert_payload_field_type_value(
+            self, data, 'message', str, 'Server has encountered an '
+                                        'unknown error'
+        )
