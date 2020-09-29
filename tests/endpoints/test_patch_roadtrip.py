@@ -30,8 +30,8 @@ class PatchRoadtripTest(unittest.TestCase):
 
         self.payload = {
             'name': ' commute home ',
-            'start_city': 'Denver, CO',
-            'end_city': 'Arvada, CO',
+            'start_city': ' Denver, CO ',
+            'end_city': ' Arvada, CO ',
         }
 
     def tearDown(self):
@@ -89,11 +89,11 @@ class UserTest(PatchRoadtripTest):
         )
         assert_payload_field_type_value(
             self, data, 'start_city', str,
-            payload['start_city']
+            payload['start_city'].strip()
         )
         assert_payload_field_type_value(
             self, data, 'end_city', str,
-            payload['end_city']
+            payload['end_city'].strip()
         )
 
     @patch('api.auth.auth.verify_decode_jwt')
@@ -117,9 +117,9 @@ class UserTest(PatchRoadtripTest):
 
         self.assertEqual(400, response.status_code)
         assert_payload_field_type_value(self, data, 'success', bool, False)
-        assert_payload_field_type_value(self, data, 'error', int, 404)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
         assert_payload_field_type_value(
-            self, data, 'errors', list, ["required 'name' field is blank"]
+            self, data, 'errors', list, ["required 'name' parameter is blank"]
         )
 
     @patch('api.auth.auth.verify_decode_jwt')
@@ -143,9 +143,10 @@ class UserTest(PatchRoadtripTest):
 
         self.assertEqual(400, response.status_code)
         assert_payload_field_type_value(self, data, 'success', bool, False)
-        assert_payload_field_type_value(self, data, 'error', int, 404)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
         assert_payload_field_type_value(
-            self, data, 'errors', list, ["required 'start_city' field is blank"]
+            self, data, 'errors', list,
+            ["required 'start_city' parameter is blank"]
         )
 
     @patch('api.auth.auth.verify_decode_jwt')
@@ -169,14 +170,15 @@ class UserTest(PatchRoadtripTest):
 
         self.assertEqual(400, response.status_code)
         assert_payload_field_type_value(self, data, 'success', bool, False)
-        assert_payload_field_type_value(self, data, 'error', int, 404)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
         assert_payload_field_type_value(
-            self, data, 'errors', list, ["required 'end_city' field is blank"]
+            self, data, 'errors', list,
+            ["required 'end_city' parameter is blank"]
         )
 
     @patch('api.auth.auth.verify_decode_jwt')
     @patch('api.auth.auth.get_token_auth_header')
-    def test_endpoint_sadpath_bad_id_patch_roadtrip(
+    def test_endpoint_sadpath_patch_roadtrip_bad_id(
             self, mock_get_token_auth_header, mock_verify_decode_jwt):
         mock_get_token_auth_header.return_value = 'tripper-token'
         mock_verify_decode_jwt.return_value = {
@@ -184,7 +186,7 @@ class UserTest(PatchRoadtripTest):
                             'update:roadtrips', 'delete:roadtrips']
         }
 
-        response = self.client.get(
+        response = self.client.patch(
             f'/api/roadtrips/9999'
         )
         self.assertEqual(404, response.status_code)

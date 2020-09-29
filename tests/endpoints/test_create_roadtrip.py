@@ -117,6 +117,11 @@ class UserTest(CreateRoadtripTest):
 
         data = json.loads(response.data.decode('utf-8'))
         assert_payload_field_type_value(self, data, 'success', bool, False)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
+        assert_payload_field_type_value(
+            self, data, 'errors', list,
+            ["required 'name' parameter is missing"]
+        )
 
     @patch('api.auth.auth.verify_decode_jwt')
     @patch('api.auth.auth.get_token_auth_header')
@@ -138,6 +143,11 @@ class UserTest(CreateRoadtripTest):
 
         data = json.loads(response.data.decode('utf-8'))
         assert_payload_field_type_value(self, data, 'success', bool, False)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
+        assert_payload_field_type_value(
+            self, data, 'errors', list,
+            ["required 'name' parameter is blank"]
+        )
 
     @patch('api.auth.auth.verify_decode_jwt')
     @patch('api.auth.auth.get_token_auth_header')
@@ -159,6 +169,11 @@ class UserTest(CreateRoadtripTest):
 
         data = json.loads(response.data.decode('utf-8'))
         assert_payload_field_type_value(self, data, 'success', bool, False)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
+        assert_payload_field_type_value(
+            self, data, 'errors', list,
+            ["required 'start_city' parameter is missing"]
+        )
 
     @patch('api.auth.auth.verify_decode_jwt')
     @patch('api.auth.auth.get_token_auth_header')
@@ -180,6 +195,11 @@ class UserTest(CreateRoadtripTest):
 
         data = json.loads(response.data.decode('utf-8'))
         assert_payload_field_type_value(self, data, 'success', bool, False)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
+        assert_payload_field_type_value(
+            self, data, 'errors', list,
+            ["required 'start_city' parameter is blank"]
+        )
 
     @patch('api.auth.auth.verify_decode_jwt')
     @patch('api.auth.auth.get_token_auth_header')
@@ -201,6 +221,11 @@ class UserTest(CreateRoadtripTest):
 
         data = json.loads(response.data.decode('utf-8'))
         assert_payload_field_type_value(self, data, 'success', bool, False)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
+        assert_payload_field_type_value(
+            self, data, 'errors', list,
+            ["required 'end_city' parameter is missing"]
+        )
 
     @patch('api.auth.auth.verify_decode_jwt')
     @patch('api.auth.auth.get_token_auth_header')
@@ -222,3 +247,8 @@ class UserTest(CreateRoadtripTest):
 
         data = json.loads(response.data.decode('utf-8'))
         assert_payload_field_type_value(self, data, 'success', bool, False)
+        assert_payload_field_type_value(self, data, 'error', int, 400)
+        assert_payload_field_type_value(
+            self, data, 'errors', list,
+            ["required 'end_city' parameter is blank"]
+        )

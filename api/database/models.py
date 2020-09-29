@@ -141,3 +141,10 @@ class RoadTrip(db.Model):
         """
         db.session.add(self)
         db.session.commit()
+
+    def update(self):
+        """
+        updates a new model into a database
+        the model must exist in the database
+        """
+        db.session.commit()

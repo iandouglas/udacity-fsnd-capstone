@@ -251,6 +251,8 @@ Required Request Body:
 - payload can include any element, or all elements
 ```json
 {
+  "success": true,
+  "name": "new trip name",
   "start_city": "Arvada, CO",
   "end_city": "Estes Park, CO"
 }
