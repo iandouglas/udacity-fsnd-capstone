@@ -47,7 +47,7 @@ class GuestUserTest(GetCitiesTest):
 class UserTest(GetCitiesTest):
     @patch('api.auth.auth.verify_decode_jwt')
     @patch('api.auth.auth.get_token_auth_header')
-    def test_endpoint_happypath_get_all_roadtrips(
+    def test_endpoint_happypath_get_all_cities(
             self, mock_get_token_auth_header, mock_verify_decode_jwt):
         mock_get_token_auth_header.return_value = 'tripper-token'
         mock_verify_decode_jwt.return_value = {

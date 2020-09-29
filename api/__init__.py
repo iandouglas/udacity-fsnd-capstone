@@ -130,10 +130,12 @@ def create_app(config_name='default'):
         return render_template('index.html', link=login_link)
 
     from api.resources.forecast import ForecastResource
+    from api.resources.cities import CitiesResource
     from api.resources.roadtrips import RoadtripsResource, RoadtripResource
 
     api.add_resource(ForecastResource, '/api/forecast')
     api.add_resource(RoadtripResource, '/api/roadtrips/<roadtrip_id>')
     api.add_resource(RoadtripsResource, '/api/roadtrips')
+    api.add_resource(CitiesResource, '/api/cities')
 
     return app
