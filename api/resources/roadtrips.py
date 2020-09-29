@@ -91,8 +91,21 @@ class RoadtripsResource(Resource):
                 'errors': errors
             }, 400
 
-    def get(self):
-        return [], 200
+    def get(self, *args, **kwargs):
+        trips = RoadTrip.query.order_by(
+            RoadTrip.name.asc()
+        ).all()
+        results = [{
+            'name': rt.name,
+            'start_city': rt.start_city().city_state(),
+            'end_city': rt.end_city().city_state(),
+            'travel_time': LocationService.route_distance_time(
+                rt.start_city(), rt.end_city())['string']
+            } for rt in trips]
+        return {
+            'success': True,
+            'results': results
+        }, 200
 
 
 class RoadtripResource(Resource):

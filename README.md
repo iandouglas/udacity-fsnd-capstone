@@ -103,6 +103,7 @@ Response Body: (TBD)
 
 Description:
 - fetches all road trips for authenticated user
+- results will be sorted in ascending alphabetical order by name
 
 Required Request Headers:
 - TBD
@@ -115,19 +116,24 @@ Required Request Body:
 
 Response Body: (TBD)
 ```json
-[
-  {
-    "name": "getaway",
-    "starting_city": "Denver, CO",
-    "ending_city": "Estes Park, CO"
-  },
-  {
-    "name": "commute to work",
-    "starting_city": "Arvada, CO",
-    "ending_city": "Denver, CO"
-  },
-  {...}
-]
+{
+  "success": true,
+  "results": [
+      {
+        "name": "commute to work",
+        "start_city": "Arvada, CO",
+        "end_city": "Denver, CO",
+        "travel_time": "15 minutes"
+      },
+      {
+        "name": "getaway",
+        "start_city": "Denver, CO",
+        "end_city": "Estes Park, CO",
+        "travel_time": "2 hours, 13 minutes"
+      },
+      {...}
+  ]
+}
 ```
 
 #### GET /api/cities
