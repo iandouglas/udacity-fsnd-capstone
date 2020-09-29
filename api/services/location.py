@@ -14,6 +14,7 @@ class LocationService:
             'lat': float(-90),
             'lng': float(-180),
             'success': True,
+            'id': 0
         }
         good_city = None
         good_state = None
@@ -29,6 +30,10 @@ class LocationService:
             payload['error'] = 'state is required'
             payload['success'] = False
             return payload
+        if len(state) != 2:
+            payload['error'] = 'state length must be 2 characters'
+            payload['success'] = False
+            return payload
 
         city_chk = db.session.query(City).filter_by(
             name=good_city, state=good_state).one_or_none()
@@ -36,6 +41,7 @@ class LocationService:
         if city_chk is not None:
             payload['lat'] = city_chk.lat
             payload['lng'] = city_chk.lng
+            payload['id'] = city_chk.id
             return payload
 
         res = requests.get(
@@ -54,8 +60,9 @@ class LocationService:
                 lat=latlng['lat'], lng=latlng['lng']
             )
             city_chk.insert()
+            payload['id'] = city_chk.id
 
             return payload
 
         else:
-            raise requests.RequestException
+            raise requests.RequestException  # pragma: no cover

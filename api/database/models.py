@@ -118,6 +118,16 @@ class RoadTrip(db.Model):
         self.start_city_id = start_city_id
         self.end_city_id = end_city_id
 
+    def start_city(self):
+        chk = db.session.query(City).get(self.start_city_id)
+        if chk:
+            return f'{chk.name}, {chk.state}'
+
+    def end_city(self):
+        chk = db.session.query(City).get(self.end_city_id)
+        if chk:
+            return f'{chk.name}, {chk.state}'
+
     def insert(self):
         """
         inserts a new model into a database

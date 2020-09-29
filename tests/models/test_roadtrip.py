@@ -12,8 +12,7 @@ class AppTest(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-        self.user = User(username='ian', email='id@w98.us', user_id=1)
-        self.user.insert()
+
         self.city_1 = City(
             name='Denver', state='CO', lat=1.23, lng=3.45, city_id=1
         )
@@ -32,7 +31,6 @@ class AppTest(unittest.TestCase):
     def test_roadtrip_model(self):
         rt = RoadTrip(
             name='daily commute',
-            user_id=self.user.id,
             start_city_id=self.city_1.id,
             end_city_id=self.city_2.id
         )
@@ -41,14 +39,12 @@ class AppTest(unittest.TestCase):
         self.assertIsInstance(rt, RoadTrip)
         self.assertIsNotNone(rt.id)
         self.assertEqual('daily commute', rt.name)
-        self.assertEqual(rt.user_id, self.user.id)
         self.assertEqual(rt.start_city_id, self.city_1.id)
         self.assertEqual(rt.end_city_id, self.city_2.id)
 
     def test_roadtrip_model_trimmed_strings(self):
         rt = RoadTrip(
             name=' daily commute ',
-            user_id=self.user.id,
             start_city_id=self.city_1.id,
             end_city_id=self.city_2.id
         )
@@ -60,7 +56,6 @@ class AppTest(unittest.TestCase):
         try:
             rt = RoadTrip(
                 name='',
-                user_id=self.user.id,
                 start_city_id=self.city_1.id,
                 end_city_id=self.city_2.id
             )
@@ -75,22 +70,6 @@ class AppTest(unittest.TestCase):
         try:
             rt = RoadTrip(
                 name=None,
-                user_id=self.user.id,
-                start_city_id=self.city_1.id,
-                end_city_id=self.city_2.id
-            )
-            rt.insert()
-        except IntegrityError:
-            self.assertTrue(True)
-        else:
-            # we should not end up in here
-            self.assertTrue(False)  # pragma: no cover
-
-    def test_roadtrip_model_missing_user(self):
-        try:
-            rt = RoadTrip(
-                name='daily commute',
-                user_id=None,
                 start_city_id=self.city_1.id,
                 end_city_id=self.city_2.id
             )
@@ -105,7 +84,6 @@ class AppTest(unittest.TestCase):
         try:
             rt = RoadTrip(
                 name='daily commute',
-                user_id=self.user.id,
                 start_city_id=None,
                 end_city_id=self.city_2.id
             )
@@ -120,7 +98,6 @@ class AppTest(unittest.TestCase):
         try:
             rt = RoadTrip(
                 name='daily commute',
-                user_id=self.user.id,
                 start_city_id=self.city_1.id,
                 end_city_id=None
             )
@@ -130,3 +107,25 @@ class AppTest(unittest.TestCase):
         else:
             # we should not end up in here
             self.assertTrue(False)  # pragma: no cover
+
+    def test_roadtrip_start_city(self):
+        rt = RoadTrip(
+            name='daily commute',
+            start_city_id=self.city_1.id,
+            end_city_id=self.city_2.id
+        )
+        rt.insert()
+
+        result = rt.start_city()
+        self.assertEqual('Denver, CO', result)
+
+    def test_roadtrip_end_city(self):
+        rt = RoadTrip(
+            name='daily commute',
+            start_city_id=self.city_1.id,
+            end_city_id=self.city_2.id
+        )
+        rt.insert()
+
+        result = rt.end_city()
+        self.assertEqual('Arvada, CO', result)

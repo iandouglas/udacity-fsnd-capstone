@@ -48,7 +48,7 @@ class GuestUserTest(CreateRoadtripTest):
 
 
 # noinspection DuplicatedCode
-class ManagerUserTest(CreateRoadtripTest):
+class UserTest(CreateRoadtripTest):
     @patch('api.auth.auth.verify_decode_jwt')
     @patch('api.auth.auth.get_token_auth_header')
     def test_endpoint_happypath_create_roadtrip(
@@ -96,3 +96,128 @@ class ManagerUserTest(CreateRoadtripTest):
             self, links, 'index', str, '/api/roadtrips'
         )
 
+    @patch('api.auth.auth.verify_decode_jwt')
+    @patch('api.auth.auth.get_token_auth_header')
+    def test_endpoint_sadpath_missing_name(
+            self, mock_get_token_auth_header, mock_verify_decode_jwt):
+        mock_get_token_auth_header.return_value = 'tripper-token'
+        mock_verify_decode_jwt.return_value = {
+            'permissions': ['get:roadtrips', 'create:roadtrips',
+                            'update:roadtrips', 'delete:roadtrips']
+        }
+
+        payload = deepcopy(self.payload)
+        del payload['name']
+        response = self.client.post(
+            '/api/roadtrips', json=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(400, response.status_code)
+
+        data = json.loads(response.data.decode('utf-8'))
+        assert_payload_field_type_value(self, data, 'success', bool, False)
+
+    @patch('api.auth.auth.verify_decode_jwt')
+    @patch('api.auth.auth.get_token_auth_header')
+    def test_endpoint_sadpath_blank_name(
+            self, mock_get_token_auth_header, mock_verify_decode_jwt):
+        mock_get_token_auth_header.return_value = 'tripper-token'
+        mock_verify_decode_jwt.return_value = {
+            'permissions': ['get:roadtrips', 'create:roadtrips',
+                            'update:roadtrips', 'delete:roadtrips']
+        }
+
+        payload = deepcopy(self.payload)
+        payload['name'] = ''
+        response = self.client.post(
+            '/api/roadtrips', json=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(400, response.status_code)
+
+        data = json.loads(response.data.decode('utf-8'))
+        assert_payload_field_type_value(self, data, 'success', bool, False)
+
+    @patch('api.auth.auth.verify_decode_jwt')
+    @patch('api.auth.auth.get_token_auth_header')
+    def test_endpoint_sadpath_missing_start_city(
+            self, mock_get_token_auth_header, mock_verify_decode_jwt):
+        mock_get_token_auth_header.return_value = 'tripper-token'
+        mock_verify_decode_jwt.return_value = {
+            'permissions': ['get:roadtrips', 'create:roadtrips',
+                            'update:roadtrips', 'delete:roadtrips']
+        }
+
+        payload = deepcopy(self.payload)
+        del payload['start_city']
+        response = self.client.post(
+            '/api/roadtrips', json=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(400, response.status_code)
+
+        data = json.loads(response.data.decode('utf-8'))
+        assert_payload_field_type_value(self, data, 'success', bool, False)
+
+    @patch('api.auth.auth.verify_decode_jwt')
+    @patch('api.auth.auth.get_token_auth_header')
+    def test_endpoint_sadpath_blank_start_city(
+            self, mock_get_token_auth_header, mock_verify_decode_jwt):
+        mock_get_token_auth_header.return_value = 'tripper-token'
+        mock_verify_decode_jwt.return_value = {
+            'permissions': ['get:roadtrips', 'create:roadtrips',
+                            'update:roadtrips', 'delete:roadtrips']
+        }
+
+        payload = deepcopy(self.payload)
+        payload['start_city'] = ' '
+        response = self.client.post(
+            '/api/roadtrips', json=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(400, response.status_code)
+
+        data = json.loads(response.data.decode('utf-8'))
+        assert_payload_field_type_value(self, data, 'success', bool, False)
+
+    @patch('api.auth.auth.verify_decode_jwt')
+    @patch('api.auth.auth.get_token_auth_header')
+    def test_endpoint_sadpath_missing_end_city(
+            self, mock_get_token_auth_header, mock_verify_decode_jwt):
+        mock_get_token_auth_header.return_value = 'tripper-token'
+        mock_verify_decode_jwt.return_value = {
+            'permissions': ['get:roadtrips', 'create:roadtrips',
+                            'update:roadtrips', 'delete:roadtrips']
+        }
+
+        payload = deepcopy(self.payload)
+        del payload['end_city']
+        response = self.client.post(
+            '/api/roadtrips', json=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(400, response.status_code)
+
+        data = json.loads(response.data.decode('utf-8'))
+        assert_payload_field_type_value(self, data, 'success', bool, False)
+
+    @patch('api.auth.auth.verify_decode_jwt')
+    @patch('api.auth.auth.get_token_auth_header')
+    def test_endpoint_sadpath_blank_end_city(
+            self, mock_get_token_auth_header, mock_verify_decode_jwt):
+        mock_get_token_auth_header.return_value = 'tripper-token'
+        mock_verify_decode_jwt.return_value = {
+            'permissions': ['get:roadtrips', 'create:roadtrips',
+                            'update:roadtrips', 'delete:roadtrips']
+        }
+
+        payload = deepcopy(self.payload)
+        payload['end_city'] = ' '
+        response = self.client.post(
+            '/api/roadtrips', json=payload,
+            content_type='application/json'
+        )
+        self.assertEqual(400, response.status_code)
+
+        data = json.loads(response.data.decode('utf-8'))
+        assert_payload_field_type_value(self, data, 'success', bool, False)

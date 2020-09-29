@@ -2,7 +2,7 @@ import unittest
 from api import create_app, db
 from api.database.models import City
 from api.services.location import LocationService
-from tests import assert_payload_field_type_value
+from tests import assert_payload_field_type_value, assert_payload_field_type
 
 
 class LocationServiceTest(unittest.TestCase):
@@ -21,7 +21,8 @@ class LocationServiceTest(unittest.TestCase):
     def test_get_latlng_happypath_with_dblookup(self):
         city = City(
             name='Arvada', state='CO',
-            lat=1.23, lng=3.45
+            lat=1.23, lng=3.45,
+            city_id=1
         )
         city.insert()
 
@@ -29,12 +30,15 @@ class LocationServiceTest(unittest.TestCase):
         assert_payload_field_type_value(self, latlng, 'success', bool, True)
         assert_payload_field_type_value(self, latlng, 'lat', float, 1.23)
         assert_payload_field_type_value(self, latlng, 'lng', float, 3.45)
+        assert_payload_field_type(self, latlng, 'id', int)
+        self.assertGreater(latlng['id'], 0)
 
-    def test_get_latlng_happypath_with_lookup(self):
-        latlng = LocationService.get_latlng('Arvada', 'CO')
+    def test_get_latlng_happypath_with_apilookup(self):
+        latlng = LocationService.get_latlng('Ottawa', 'ON')
         assert_payload_field_type_value(self, latlng, 'success', bool, True)
-        assert_payload_field_type_value(self, latlng, 'lat', float, 39.801122)
-        assert_payload_field_type_value(self, latlng, 'lng', float, -105.081451)
+        assert_payload_field_type_value(self, latlng, 'lat', float, 45.420421)
+        assert_payload_field_type_value(self, latlng, 'lng', float, -75.692432)
+        self.assertGreater(latlng['id'], 0)
 
     def test_get_latlng_sadpath_blank_city(self):
         latlng = LocationService.get_latlng('', 'CO')

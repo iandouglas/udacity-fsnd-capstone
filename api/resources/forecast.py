@@ -1,5 +1,4 @@
 from flask_restful import Resource, reqparse
-
 from api.services.forecast import ForecastService
 from api.services.location import LocationService
 
@@ -21,11 +20,12 @@ class ForecastResource(Resource):
                     'location': f'{city}, {state}',
                     'current_temp': forecast['current_temp'],
                     'conditions': forecast['conditions'],
-                }
+                }, 200
 
         return {
             'success': False,
             'location': f'{city}, {state}',
             'current_temp': '',
             'conditions': '',
-        }
+            'message': latlng['error']
+        }, 400

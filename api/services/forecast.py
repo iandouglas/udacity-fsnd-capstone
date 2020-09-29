@@ -25,7 +25,7 @@ class ForecastService:
                 payload['current_temp'] = f"{forecast['temp']}F"
                 payload['conditions'] = forecast['weather'][0]['description']
             else:
-                raise requests.RequestException
+                raise requests.RequestException  # pragma: no cover
         else:
             payload['success'] = False
 

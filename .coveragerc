@@ -1,6 +1,8 @@
 [run]
 omit =
     .pytest_cache
+    run.py
+    manage.py
     venv/*
     ../venv/*
     ../../venv/*
@@ -9,6 +11,8 @@ omit =
 [report]
 omit =
     .pytest_cache
+    run.py
+    manage.py
     venv/*
     ../venv/*
     ../../venv/*

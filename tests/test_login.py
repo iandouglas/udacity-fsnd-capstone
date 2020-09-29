@@ -9,7 +9,7 @@ from run import app
 class Auth0LoginTest(unittest.TestCase):
     def test_login(self):
         if os.getenv('TRAVISCI'):
-            return
+            return  # pragma: no cover
         chrome = Browser('chrome', incognito=True, headless=True)
 
         with Browser('flask', app=app) as browser:

@@ -36,12 +36,12 @@ class ForecastTest(unittest.TestCase):
         assert_payload_field_type(self, data, 'conditions', str)
         self.assertGreater(len(data['conditions']), 0)
 
-    def test_forecast_sadpath(self):
-        response = self.client.get('/api/forecast?location=lkajslkjsdf')
+    def test_forecast_sadpath_long_state(self):
+        response = self.client.get('/api/forecast?location=lkajslkjsdf,zzasd')
         data = json.loads(response.data.decode('utf-8'))
 
-        self.assertEqual(500, response.status_code)
+        self.assertEqual(400, response.status_code)
+        assert_payload_field_type_value(self, data, 'success', bool, False)
         assert_payload_field_type_value(
-            self, data, 'message', str, 'Server has encountered an '
-                                        'unknown error'
+            self, data, 'message', str, 'state length must be 2 characters'
         )
