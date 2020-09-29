@@ -25,14 +25,31 @@ class AppTest(unittest.TestCase):
         self.assertIsInstance(user, User)
         self.assertIsNotNone(user.id)
         self.assertEqual('ian', user.username)
+        self.assertEqual('ian.douglas@iandouglas.com', user.email)
+
+    def test_user_model_with_forced_id(self):
+        user = User(username='ian',
+                    email='ian.douglas@iandouglas.com',
+                    user_id=1)
+        user.insert()
+
+        self.assertIsInstance(user, User)
+        self.assertIsNotNone(user.id)
+        self.assertEqual(1, user.id)
+        self.assertEqual('ian', user.username)
+        self.assertEqual('ian.douglas@iandouglas.com', user.email)
 
     def test_user_model_trimmed_username(self):
         user = User(username=' ian ', email='ian.douglas@iandouglas.com')
         user.insert()
 
-        self.assertIsInstance(user, User)
-        self.assertIsNotNone(user.id)
         self.assertEqual('ian', user.username)
+
+    def test_user_model_trimmed_email(self):
+        user = User(username='ian', email=' ian.douglas@iandouglas.com ')
+        user.insert()
+
+        self.assertEqual('ian.douglas@iandouglas.com', user.email)
 
     def test_user_model_unique_username(self):
         user = User(username='ian', email='ian.douglas@iandouglas.com')
