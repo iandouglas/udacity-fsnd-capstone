@@ -18,6 +18,22 @@ class GetRoadtripsTest(unittest.TestCase):
         db.create_all()
         self.client = self.app.test_client()
 
+        self.arvada = LocationService.get_latlng('Arvada', 'CO')
+        self.denver = LocationService.get_latlng('Denver', 'CO')
+
+        self.roadtrip_1 = RoadTrip(
+            name='commute to work',
+            start_city_id=self.arvada['id'],
+            end_city_id=self.denver['id'],
+        )
+        self.roadtrip_1.insert()
+        self.roadtrip_2 = RoadTrip(
+            name='commute home',
+            start_city_id=self.denver['id'],
+            end_city_id=self.arvada['id'],
+        )
+        self.roadtrip_2.insert()
+
     def tearDown(self):
         db.session.remove()
         db_drop_everything(db)
@@ -55,22 +71,6 @@ class UserTest(GetRoadtripsTest):
                             'update:roadtrips', 'delete:roadtrips']
         }
 
-        arvada = LocationService.get_latlng('Arvada', 'CO')
-        denver = LocationService.get_latlng('Denver', 'CO')
-
-        roadtrip_1 = RoadTrip(
-            name='commute to work',
-            start_city_id=arvada['id'],
-            end_city_id=denver['id'],
-        )
-        roadtrip_1.insert()
-        roadtrip_2 = RoadTrip(
-            name='commute home',
-            start_city_id=denver['id'],
-            end_city_id=arvada['id'],
-        )
-        roadtrip_2.insert()
-
         response = self.client.get(
             f'/api/roadtrips'
         )
@@ -83,51 +83,31 @@ class UserTest(GetRoadtripsTest):
         results = data['results']
 
         assert_payload_field_type_value(
-            self, results[0], 'name', str, roadtrip_2.name
+            self, results[0], 'name', str, self.roadtrip_2.name
         )
         assert_payload_field_type_value(
             self, results[0], 'start_city', str,
-            roadtrip_2.start_city().city_state()
+            self.roadtrip_2.start_city().city_state()
         )
         assert_payload_field_type_value(
             self, results[0], 'end_city', str,
-            roadtrip_2.end_city().city_state()
+            self.roadtrip_2.end_city().city_state()
         )
         assert_payload_field_type(
             self, results[0], 'travel_time', str
         )
 
         assert_payload_field_type_value(
-            self, results[1], 'name', str, roadtrip_1.name
+            self, results[1], 'name', str, self.roadtrip_1.name
         )
         assert_payload_field_type_value(
             self, results[1], 'start_city', str,
-            roadtrip_1.start_city().city_state()
+            self.roadtrip_1.start_city().city_state()
         )
         assert_payload_field_type_value(
             self, results[1], 'end_city', str,
-            roadtrip_1.end_city().city_state()
+            self.roadtrip_1.end_city().city_state()
         )
         assert_payload_field_type(
             self, results[1], 'travel_time', str
         )
-
-    @patch('api.auth.auth.verify_decode_jwt')
-    @patch('api.auth.auth.get_token_auth_header')
-    def test_endpoint_happypath_get_empty_roadtrips(
-            self, mock_get_token_auth_header, mock_verify_decode_jwt):
-        mock_get_token_auth_header.return_value = 'tripper-token'
-        mock_verify_decode_jwt.return_value = {
-            'permissions': ['get:roadtrips', 'create:roadtrips',
-                            'update:roadtrips', 'delete:roadtrips']
-        }
-
-        response = self.client.get(
-            f'/api/roadtrips'
-        )
-        self.assertEqual(200, response.status_code)
-
-        data = json.loads(response.data.decode('utf-8'))
-        assert_payload_field_type_value(self, data, 'success', bool, True)
-        assert_payload_field_type(self, data, 'results', list)
-        self.assertEqual(0, len(data['results']))
