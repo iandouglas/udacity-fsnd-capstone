@@ -153,14 +153,15 @@ Required Request Body:
 Response Body: (TBD)
 ```json
 {
+  "success": true,
   "starting_cities": {
     "Arvada, CO": 2,
-    "Denver, CO": 3
+    "Denver, CO": 2
   },
   "ending_cities": {
-    "Arvada, CO": 2,
+    "Arvada, CO": 1,
     "Estes Park, CO": 2,
-    "Denver, CO": 1,
+    "Denver, CO": 1
   }
 }
 ```
