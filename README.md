@@ -77,6 +77,8 @@ and a JSON payload indicating helpful errors in a format such as:
 
 #### GET /api/forecast?city=Arvada,CO
 
+[try it live](http://iandouglas-ufsnd-capstone.herokuapp.com/api/forecast?location=arvada,co)
+
 Description:
 - fetches current weather in Arvada, CO from OpenWeather
 
