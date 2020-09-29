@@ -197,9 +197,10 @@ Required Auth Role:
 - "create:roadtrips"
 
 Required Request Body:
-- JSON payload of 'start_city', 'end_city'
+- JSON payload of 'name', 'start_city', 'end_city'
 ```json
 {
+  "name": "commute",
   "start_city": "Arvada, CO",
   "end_city": "Estes Park, CO"
 }
@@ -208,7 +209,21 @@ Required Request Body:
 Response Body: (TBD)
 - json payload indicating road trip was created, including a restful route
   to fetch road trip information
-
+```json
+{
+  "success": true,
+  "id": 6,
+  "name": "commute",
+  "start_city": "Arvada, CO",
+  "end_city": "Denver, CO",
+  "links": {
+    "get": "/api/roadtrips/6",
+    "patch": "/api/roadtrips/6",
+    "delete": "/api/roadtrips/6",
+    "index": "/api/roadtrips"
+  }
+}
+```
 
 #### PATCH /api/roadtrips/1
 

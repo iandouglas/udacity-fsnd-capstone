@@ -97,7 +97,7 @@ class RoadTrip(db.Model):
     # Auto-incrementing, unique primary key
     id = Column(Integer, primary_key=True)
     # unique username
-    name = Column(String(80), unique=True, nullable=False)
+    name = Column(String(80), nullable=False)
     user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id'),
