@@ -148,3 +148,11 @@ class RoadTrip(db.Model):
         the model must exist in the database
         """
         db.session.commit()
+
+    def delete(self):
+        """
+        deletes model from database
+        the model must exist in the database
+        """
+        db.session.delete(self)
+        db.session.commit()

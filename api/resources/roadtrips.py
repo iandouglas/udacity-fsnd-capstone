@@ -187,3 +187,14 @@ class RoadtripResource(Resource):
             'start_city': rt.start_city().city_state(),
             'end_city': rt.end_city().city_state(),
         }, 200
+
+    def delete(self, *args, **kwargs):
+        roadtrip_id = kwargs['roadtrip_id']
+        rt = None
+        try:
+            rt = db.session.query(RoadTrip).filter_by(id=roadtrip_id).one()
+        except NoResultFound:
+            return abort(404)
+
+        rt.delete()
+        return {}, 204
