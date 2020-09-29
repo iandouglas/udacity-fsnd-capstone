@@ -19,7 +19,7 @@ class AppTest(unittest.TestCase):
         self.app_context.pop()
 
     def test_city_model(self):
-        city = City(name='Arvada', state='CO', lat=1.23, lng=3.45)
+        city = City(name='arvada', state='co', lat=1.23, lng=3.45)
         city.insert()
 
         self.assertIsInstance(city, City)
@@ -46,7 +46,7 @@ class AppTest(unittest.TestCase):
             # we should not end up in here
             self.assertTrue(False)  # pragma: no cover
 
-    def test_city_model_mssing_city(self):
+    def test_city_model_missing_city(self):
         try:
             city = City(name=None, state='CO', lat=1.23, lng=3.45)
             city.insert()
@@ -95,3 +95,9 @@ class AppTest(unittest.TestCase):
         else:
             # we should not end up in here
             self.assertTrue(False)  # pragma: no cover
+
+    def test_city_model_city_state(self):
+        city = City(name=' Arvada ', state=' CO ', lat=1.23, lng=3.45)
+        city.insert()
+
+        self.assertEqual('Arvada, CO', city.city_state())

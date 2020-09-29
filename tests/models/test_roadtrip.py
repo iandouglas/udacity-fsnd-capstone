@@ -116,7 +116,7 @@ class AppTest(unittest.TestCase):
         )
         rt.insert()
 
-        result = rt.start_city()
+        result = rt.start_city().city_state()
         self.assertEqual('Denver, CO', result)
 
     def test_roadtrip_end_city(self):
@@ -127,5 +127,5 @@ class AppTest(unittest.TestCase):
         )
         rt.insert()
 
-        result = rt.end_city()
+        result = rt.end_city().city_state()
         self.assertEqual('Arvada, CO', result)

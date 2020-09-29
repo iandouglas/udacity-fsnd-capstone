@@ -117,10 +117,12 @@ Response Body: (TBD)
 ```json
 [
   {
+    "name": "getaway",
     "starting_city": "Denver, CO",
     "ending_city": "Estes Park, CO"
   },
   {
+    "name": "commute to work",
     "starting_city": "Arvada, CO",
     "ending_city": "Denver, CO"
   },
@@ -174,8 +176,10 @@ Required Request Body:
 Response Body: (TBD)
 ```json
 {
-  "starting_city": "Denver, CO",
-  "ending_city": "Estes Park, CO",
+  "success": true,
+  "name": "getaway weekend",
+  "start_city": "Denver, CO",
+  "end_city": "Estes Park, CO",
   "travel_time": "2 hours, 13 minutes",
   "forecast_at_eta": {
     "temp": "52.5F",

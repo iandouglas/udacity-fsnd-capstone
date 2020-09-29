@@ -15,6 +15,7 @@ class CreateRoadtripTest(unittest.TestCase):
         self.app_context.push()
         db.create_all()
         self.client = self.app.test_client()
+
         self.payload = {
             'name': 'commute',
             'start_city': 'Arvada, CO',
