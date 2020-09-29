@@ -71,8 +71,10 @@ class City(db.Model):
             if state == '':
                 state = None
 
-        self.name = name
-        self.state = state
+        if name:
+            self.name = name.title()
+        if state:
+            self.state = state.upper()
         self.lat = lat
         self.lng = lng
         if city_id is not None:
@@ -86,6 +88,9 @@ class City(db.Model):
         """
         db.session.add(self)
         db.session.commit()
+
+    def city_state(self):
+        return f'{self.name}, {self.state}'
 
 
 class RoadTrip(db.Model):
@@ -121,12 +126,12 @@ class RoadTrip(db.Model):
     def start_city(self):
         chk = db.session.query(City).get(self.start_city_id)
         if chk:
-            return f'{chk.name}, {chk.state}'
+            return chk
 
     def end_city(self):
         chk = db.session.query(City).get(self.end_city_id)
         if chk:
-            return f'{chk.name}, {chk.state}'
+            return chk
 
     def insert(self):
         """

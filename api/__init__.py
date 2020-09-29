@@ -133,7 +133,7 @@ def create_app(config_name='default'):
     from api.resources.roadtrips import RoadtripsResource, RoadtripResource
 
     api.add_resource(ForecastResource, '/api/forecast')
-    api.add_resource(RoadtripResource, '/api/roadtrips/roadtrip_id')
+    api.add_resource(RoadtripResource, '/api/roadtrips/<roadtrip_id>')
     api.add_resource(RoadtripsResource, '/api/roadtrips')
 
     return app

@@ -88,7 +88,9 @@ class LocationService:
                     eta.append(f'{bits[0]} {p.plural("hour", bits[0])}')
                 if bits[1] > 0:
                     eta.append(f'{bits[1]} {p.plural("minute", bits[1])}')
-                return ', '.join(eta)
+                return {
+                    'string': ', '.join(eta),
+                    'seconds': route['time']
+                }
 
-            return 'impossible route'
-        return 'impossible route'
+            return {'string': 'impossible route'}

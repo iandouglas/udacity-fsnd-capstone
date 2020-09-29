@@ -84,7 +84,8 @@ class LocationServiceTest(unittest.TestCase):
 
         eta = LocationService.route_distance_time(denver, estespark)
 
-        self.assertEqual('1 hour, 23 minutes', eta)
+        self.assertEqual('1 hour, 23 minutes', eta['string'])
+        self.assertGreater(eta['seconds'], 4800)
 
     def test_route_distance_time_sad_path(self):
         denver_latlng = LocationService.get_latlng('Denver', 'CO')
@@ -94,4 +95,4 @@ class LocationServiceTest(unittest.TestCase):
 
         eta = LocationService.route_distance_time(denver, londonuk)
 
-        self.assertEqual('impossible route', eta)
+        self.assertEqual('impossible route', eta['string'])

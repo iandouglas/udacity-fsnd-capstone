@@ -1,16 +1,21 @@
+import datetime
 import json
 
 import bleach
 from flask import request
-from flask_restful import Resource
+from flask_restful import Resource, abort
+from sqlalchemy.orm.exc import NoResultFound
+
 from api import requires_auth, db
 from api.database.models import RoadTrip
+from api.services.forecast import ForecastService
 from api.services.location import LocationService
 
 
 class RoadtripsResource(Resource):
     method_decorators = {
-        'post': [requires_auth('create:roadtrips')]
+        'post': [requires_auth('create:roadtrips')],
+        'get': [requires_auth('get:roadtrips')]
     }
 
     def _create_trip(self, data):
@@ -71,8 +76,8 @@ class RoadtripsResource(Resource):
                 'success': True,
                 'id': roadtrip.id,
                 'name': roadtrip.name,
-                'start_city': roadtrip.start_city(),
-                'end_city': roadtrip.end_city(),
+                'start_city': roadtrip.start_city().city_state(),
+                'end_city': roadtrip.end_city().city_state(),
                 'links': {
                     'get': f'/api/roadtrips/{roadtrip.id}',
                     'patch': f'/api/roadtrips/{roadtrip.id}',
@@ -86,10 +91,42 @@ class RoadtripsResource(Resource):
                 'errors': errors
             }, 400
 
+    def get(self):
+        return [], 200
+
+
 class RoadtripResource(Resource):
     method_decorators = {
         'get': [requires_auth('get:roadtrips')],
         'delete': [requires_auth('delete:roadtrips')],
         'patch': [requires_auth('patch:roadtrips')]
     }
-    pass
+
+    def get(self, *args, **kwargs):
+        roadtrip_id = int(bleach.clean(kwargs['roadtrip_id'].strip()))
+        rt = None
+        try:
+            rt = db.session.query(RoadTrip).filter_by(id=roadtrip_id).one()
+        except NoResultFound:
+            return abort(404)
+
+        sc = rt.start_city()
+        ec = rt.end_city()
+
+        travel_time = LocationService.route_distance_time(sc, ec)
+        forecast = ForecastService.get_forecast(
+            {'success': True, 'lat': ec.lat, 'lng': ec.lng}, hourly=True
+        )
+        hrs = max(round(travel_time['seconds']//3600) - 1, 0)
+        forecast = forecast['hourly'][hrs]
+        return {
+            'success': True,
+            'name': rt.name,
+            'start_city': sc.city_state(),
+            'end_city': ec.city_state(),
+            'travel_time': travel_time['string'],
+            'forecast_at_eta': {
+                'temp': f'{forecast["temp"]}F',
+                'conditions': forecast['weather'][0]['description']
+            }
+        }, 200

@@ -4,7 +4,7 @@ import requests
 
 class ForecastService:
     @classmethod
-    def get_forecast(cls, latlng):
+    def get_forecast(cls, latlng, hourly=False):
         payload = {
             'current_temp': '',
             'conditions': '',
@@ -17,13 +17,16 @@ class ForecastService:
                 f"?appid={os.getenv('OPENWEATHER_API', 'bad openweather api key')}"
                 f"&lat={latlng['lat']}"
                 f"&lon={latlng['lng']}"
-                f"&exclude=minutely,alerts"
+                f"&exclude=minutely,alerts,daily"
                 f"&units=imperial"
             )
             if res.status_code == 200:
-                forecast = res.json()['current']
+                data = res.json()
+                forecast = data['current']
                 payload['current_temp'] = f"{forecast['temp']}F"
                 payload['conditions'] = forecast['weather'][0]['description']
+                if hourly:
+                    payload['hourly'] = data['hourly']
             else:
                 raise requests.RequestException  # pragma: no cover
         else:

@@ -108,7 +108,7 @@ class UserTest(GetRoadtripTest):
             self.roadtrip_1.end_city().city_state()
         )
         assert_payload_field_type_value(
-            self, data, 'travel_time', str, '2 hours, 13 minutes'
+            self, data, 'travel_time', str, '15 minutes'
         )
 
         assert_payload_field_type(
