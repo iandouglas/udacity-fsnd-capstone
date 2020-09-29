@@ -12,7 +12,7 @@ class AppTest(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-        self.user = User(username='ian', user_id=1)
+        self.user = User(username='ian', email='id@w98.us', user_id=1)
         self.user.insert()
         self.city_1 = City(
             name='Denver', state='CO', lat=1.23, lng=3.45, city_id=1

@@ -16,7 +16,7 @@ when we arrive.
 
 Models will include at least:
 - Two classes with primary keys at at least two attributes each
-  - user class only has username and id
+  - user class has username, email, and id
   - city class has city, state, latitude and longitude, and id
   - roadtrip class has name,and relationships to users and cities
 - Optional but encouraged: One-to-many or many-to-many relationships between 

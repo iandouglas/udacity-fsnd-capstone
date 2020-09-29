@@ -1,3 +1,4 @@
+import bleach
 from sqlalchemy import Column, String, Integer, Float
 import json
 from api import db
@@ -17,14 +18,22 @@ class User(db.Model):
     id = Column(Integer, primary_key=True)
     # unique username
     username = Column(String(80), unique=True, nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
     roadtrips = db.relationship('RoadTrip', backref='user', lazy=True)
 
-    def __init__(self, username, user_id=None):
+    def __init__(self, username, email, user_id=None):
         if username is not None:
-            username = username.strip()
+            username = bleach.clean(username).strip()
             if username == '':
                 username = None
+
+        if email is not None:
+            email = bleach.clean(email).strip()
+            if email == '':
+                email = None
+
         self.username = username
+        self.email = email
         if user_id is not None:
             self.id = user_id
 
