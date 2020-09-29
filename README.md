@@ -21,9 +21,8 @@ Models will include at least:
   - roadtrip class has name,and relationships to users and cities
 - Optional but encouraged: One-to-many or many-to-many relationships between 
   classes
-  - this project includes both a one-to-many (one user can have many road 
-  trips) and a many-to-many (technically, a user has many cities through the
-  road trips table, making it a 'join' table between users and cities)
+  - there is a many-to-many self-referential relationship between cities and 
+    road trips
 
 Endpoints will include at least:
 - Two GET requests
