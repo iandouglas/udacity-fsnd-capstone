@@ -247,8 +247,8 @@ Required Auth Role:
 - "update:roadtrips"
 
 Required Request Body:
-- JSON payload of 'start_city', 'end_city'
-- payload can include one or the other, or both
+- JSON payload of 'name', 'start_city', 'end_city'
+- payload can include any element, or all elements
 ```json
 {
   "start_city": "Arvada, CO",
@@ -259,7 +259,21 @@ Required Request Body:
 Response Body: (TBD)
 - json payload indicating road trip was updated, including a restful route
   to fetch road trip information
-
+```json
+{
+  "success": true,
+  "id": 6,
+  "name": "commute",
+  "start_city": "Arvada, CO",
+  "end_city": "Denver, CO",
+  "links": {
+    "get": "/api/roadtrips/6",
+    "patch": "/api/roadtrips/6",
+    "delete": "/api/roadtrips/6",
+    "index": "/api/roadtrips"
+  }
+}
+```
 
 #### DELETE /api/roadtrips/1
 
