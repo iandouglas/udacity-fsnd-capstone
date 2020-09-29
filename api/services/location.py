@@ -1,6 +1,8 @@
 import os
+import time
 
 import bleach
+import inflect
 import requests
 
 from api import db
@@ -45,8 +47,8 @@ class LocationService:
             return payload
 
         res = requests.get(
-            'http://www.mapquestapi.com/'
-            'geocoding/v1/address'
+            'http://www.mapquestapi.com'
+            '/geocoding/v1/address'
             f"?key={os.getenv('MAPQUEST_API', 'bad mapquest api key')}"
             f'&location={city},{state}'
         )
@@ -66,3 +68,27 @@ class LocationService:
 
         else:
             raise requests.RequestException  # pragma: no cover
+
+    @classmethod
+    def route_distance_time(cls, start_city, end_city):
+        res = requests.get(
+            'http://www.mapquestapi.com'
+            '/directions/v2/route'
+            f"?key={os.getenv('MAPQUEST_API', 'bad mapquest api key')}"
+            f'&from={start_city.city_state()}'
+            f'&to={end_city.city_state()}'
+        )
+        if res.status_code == 200:
+            p = inflect.engine()
+            route = res.json()['route']
+            if 'formattedTime' in route:
+                bits = [int(b) for b in route['formattedTime'].split(':')]
+                eta = []
+                if bits[0] > 0:
+                    eta.append(f'{bits[0]} {p.plural("hour", bits[0])}')
+                if bits[1] > 0:
+                    eta.append(f'{bits[1]} {p.plural("minute", bits[1])}')
+                return ', '.join(eta)
+
+            return 'impossible route'
+        return 'impossible route'

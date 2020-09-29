@@ -76,3 +76,22 @@ class LocationServiceTest(unittest.TestCase):
             self, latlng, 'error', str, 'state is required'
         )
 
+    def test_route_distance_time_happy_path(self):
+        denver_latlng = LocationService.get_latlng('Denver', 'CO')
+        denver = db.session.query(City).get(denver_latlng['id'])
+        estespark_latlng = LocationService.get_latlng('Estes Park', 'CO')
+        estespark = db.session.query(City).get(estespark_latlng['id'])
+
+        eta = LocationService.route_distance_time(denver, estespark)
+
+        self.assertEqual('1 hour, 23 minutes', eta)
+
+    def test_route_distance_time_sad_path(self):
+        denver_latlng = LocationService.get_latlng('Denver', 'CO')
+        denver = db.session.query(City).get(denver_latlng['id'])
+        londonuk_latlng = LocationService.get_latlng('London', 'UK')
+        londonuk = db.session.query(City).get(londonuk_latlng['id'])
+
+        eta = LocationService.route_distance_time(denver, londonuk)
+
+        self.assertEqual('impossible route', eta)
