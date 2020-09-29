@@ -18,8 +18,8 @@ class User(db.Model):
     id = Column(Integer, primary_key=True)
     # unique username
     username = Column(String(80), unique=True, nullable=False)
+    # unique email
     email = Column(String(100), unique=True, nullable=False)
-    roadtrips = db.relationship('RoadTrip', backref='user', lazy=True)
 
     def __init__(self, username, email, user_id=None):
         if username is not None:
@@ -96,13 +96,7 @@ class RoadTrip(db.Model):
 
     # Auto-incrementing, unique primary key
     id = Column(Integer, primary_key=True)
-    # unique username
     name = Column(String(80), nullable=False)
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey('users.id'),
-        nullable=False
-    )
     start_city_id = db.Column(
         db.Integer,
         db.ForeignKey('cities.id'),
@@ -114,14 +108,13 @@ class RoadTrip(db.Model):
         nullable=False
     )
 
-    def __init__(self, name, user_id, start_city_id, end_city_id):
+    def __init__(self, name, start_city_id, end_city_id):
         if name is not None:
             name = name.strip()
             if name == '':
                 name = None
 
         self.name = name
-        self.user_id = user_id
         self.start_city_id = start_city_id
         self.end_city_id = end_city_id
 
